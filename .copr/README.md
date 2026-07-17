@@ -11,9 +11,10 @@ requiring network access during the RPM build itself.
    `rust-nu.spec`.
 4. Select the tag, branch, or commit to build and start the build.
 
-COPR calls `.copr/Makefile`'s `srpm` target. The target vendors the exact
-`Cargo.lock` dependency set, archives the checked-out source, and writes the
-SRPM to COPR's supplied output directory. The RPM spec then invokes Cargo in
+COPR calls `.copr/Makefile`'s `srpm` target. Because this stage runs before
+RPM `BuildRequires` are installed, the target installs `cargo` with `dnf` when
+needed. It then vendors the exact `Cargo.lock` dependency set, archives the
+checked-out source, and writes the SRPM to COPR's supplied output directory. The RPM spec then invokes Cargo in
 `--offline --locked` mode, making the binary RPM build independent of network
 access and of distribution-packaged Rust crates.
 

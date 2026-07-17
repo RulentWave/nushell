@@ -12,6 +12,7 @@ VENDOR_CONFIG := .copr/cargo-vendor.toml
 .PHONY: srpm
 srpm:
 	set -euo pipefail; \
+	if ! command -v cargo >/dev/null; then dnf -y install cargo; fi; \
 	archive="$$(mktemp --suffix=.tar.gz)"; \
 	cleanup() { rm -rf "$(VENDOR_DIR)" "$(VENDOR_CONFIG)" "$(SOURCE_ARCHIVE)" "$$archive"; }; \
 	trap cleanup EXIT; \
